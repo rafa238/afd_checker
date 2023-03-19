@@ -1,5 +1,5 @@
-2 2 a 1
-a b
+2 2 q0 1
+q0 q1
 0 1
-b
-a b b b
+q1
+q0 q1 q1 q1

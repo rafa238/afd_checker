@@ -2,9 +2,13 @@ package com.afd.afdcheck;
 
 public class ComprobarAFD {
     public static void main(String[] args) {
-        Reader read = new Reader("automata.txt");
-        
-        read.readAutomata();
+        Reader AFDreader = new Reader("automata.txt");
+        AFD afd = AFDreader.readAutomata();
+        boolean ans = afd.checkString("00000100000");
+        if(ans) {
+            System.out.println("Entrada aceptada");
+        } else {
+            System.out.println("Entrada invalida");
+        }
     }
-    
 }

@@ -1,7 +1,6 @@
 package com.afd.afdcheck;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -9,7 +8,7 @@ import java.util.Scanner;
 /*
  *
  * Entrada:
- *   Q Sigma q0 F
+ *   #Q #Sigma q0 #F
  *   estados(Q)
  *   alfabeto(Sigma)
  *   estados de aceptacion(F)
@@ -64,13 +63,14 @@ public class Reader {
             //obtener Transiciones (Q*Sigma)
             for(int i=0; i<Q; i++){
                 //row -> states[i]
+                State currentState = states[i];
                 for(int j=0; j<sigmaLength; j++){
                     //column alphabet
                     String simbol = alphabet[j];
                     
                     // transition
-                    String targetStateName = scanf.next();
-                    states[i].addTransition(simbol, name_state.get(targetStateName));
+                    String transitionState = scanf.next();
+                    currentState.addTransition(simbol, name_state.get(transitionState));
                 }
             }
             
@@ -80,7 +80,7 @@ public class Reader {
             automata.addAcceptedState(acceptedStates);
             automata.setInitialState(name_state.get(initialState));
         } catch (Exception ex) {
-            System.out.println("Error al leer el archivo\n" + ex);
+            System.out.println("Error al leer el AFD archivo\n" + ex);
         }
         
         /*for(State s : automata.getStates()){

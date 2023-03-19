@@ -16,17 +16,9 @@ public class AFD {
         alphabet = new HashSet<>();
         acceptedStates = new HashSet<>();
     }
-    
-    public Set<State> getStates() {
-        return states;
-    }
-    
+
     public void addState(State[] states){
         this.states.addAll(Arrays.asList(states));
-    }
-
-    public Set<String> getAlphabet() {
-        return alphabet;
     }
 
     public void addAlphabet(String[] alphabet){
@@ -36,13 +28,30 @@ public class AFD {
     public void addAcceptedState(String[] acceptedStates){
         if(this.states.isEmpty()) System.out.println("Agrega estados primero :(");
         for(String acState : acceptedStates){
-            for(State state : this.states){
-                if(acState.equals(state.getName())){
-                    state.setIsAceptingState(true);
-                    this.acceptedStates.add(state);
-                }
+            State state = searchState(acState);
+            state.setIsAceptingState(true);
+            this.acceptedStates.add(state);
+        }
+    }
+    
+    public boolean checkString(String strToTest){
+        
+        State auxState = initialState;
+        for(Character simbol : strToTest.toCharArray()){
+            if(!this.alphabet.contains(simbol.toString())) throw new Error("No existe ese simbolo en el alfabeto del AFD");
+            auxState = auxState.transition(simbol.toString());
+        }
+        
+        return auxState.isIsAceptingState();
+    }
+    
+    public State searchState(String searchedId){
+        for(State state : this.states){
+            if(state.getName().equals(searchedId)){
+                return state;
             }
         }
+        throw new Error("No existe este estado!\n");
     }
     
     public State getInitialState() {

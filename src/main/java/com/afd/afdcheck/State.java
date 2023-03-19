@@ -1,17 +1,18 @@
 package com.afd.afdcheck;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 
 public class State {
     private String name;
+    //mapea Simbolo - estado
     private Map<String, State> transitions;
     private boolean isAceptingState;
     
     public State(String name) {
         this.name = name;
-        transitions = new TreeMap<>();
+        transitions = new HashMap<>();
         this.isAceptingState = false;
     }
     
@@ -39,7 +40,6 @@ public class State {
         this.isAceptingState = isAceptingState;
     }
     
-    
     @Override
     public String toString() {
         String str = "";
@@ -47,6 +47,4 @@ public class State {
         str += name;
         return  str;
     }
-    
-    
 }
