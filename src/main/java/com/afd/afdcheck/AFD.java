@@ -37,11 +37,13 @@ public class AFD {
     public boolean checkString(String strToTest){
         
         State auxState = initialState;
+        System.out.println("Transiciones: \n");
         for(Character simbol : strToTest.toCharArray()){
             if(!this.alphabet.contains(simbol.toString())) throw new Error("No existe ese simbolo en el alfabeto del AFD");
+            System.out.print(auxState.toString() + " ");
             auxState = auxState.transition(simbol.toString());
         }
-        
+        System.out.print("\n");
         return auxState.isIsAceptingState();
     }
     
@@ -60,6 +62,18 @@ public class AFD {
 
     public void setInitialState(State initialState) {
         this.initialState = initialState;
+    }
+
+    public Set<State> getStates() {
+        return states;
+    }
+
+    public Set<String> getAlphabet() {
+        return alphabet;
+    }
+
+    public Set<State> getAcceptedStates() {
+        return acceptedStates;
     }
 
     @Override

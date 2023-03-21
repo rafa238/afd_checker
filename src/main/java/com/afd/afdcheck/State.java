@@ -39,6 +39,10 @@ public class State {
     public void setIsAceptingState(boolean isAceptingState) {
         this.isAceptingState = isAceptingState;
     }
+
+    public Map<String, State> getTransitions() {
+        return transitions;
+    }
     
     @Override
     public String toString() {

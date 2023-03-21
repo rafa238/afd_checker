@@ -1,8 +1,9 @@
 package com.afd.views;
 
+import com.afd.afdcheck.AFD;
+import com.afd.afdcheck.Reader;
+import com.afd.afdcheck.State;
 import com.mxgraph.swing.mxGraphComponent;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 public class Menu extends javax.swing.JFrame {
 
@@ -10,23 +11,7 @@ public class Menu extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        //Panel del grafo
-        GraphView gv = new GraphView();
         
-        JPanel pnl = new JPanel();
-        JButton b = new JButton();
-        b.setText("hsadof");
-        mxGraphComponent graphComponent = gv.initGraph();
-        
-        pnl.add(graphComponent);
-        //pnl.add(b);
-        
-        //pnl.setBackground(Color.red);
-        pnl.setSize(this.pnlGraph.getSize());
-        this.pnlGraph.add(pnl);
-        
-        this.pnlGraph.repaint();
-        this.repaint();
         
     }
 
@@ -35,33 +20,47 @@ public class Menu extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlOptions = new javax.swing.JPanel();
-        pnlGraph = new javax.swing.JPanel();
+        btnGenerar = new javax.swing.JButton();
+        pnlGraph = new javax.swing.JScrollPane();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pnlOptions.setBackground(new java.awt.Color(255, 153, 0));
 
+        btnGenerar.setText("Generar");
+        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlOptionsLayout = new javax.swing.GroupLayout(pnlOptions);
         pnlOptions.setLayout(pnlOptionsLayout);
         pnlOptionsLayout.setHorizontalGroup(
             pnlOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 209, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOptionsLayout.createSequentialGroup()
+                .addContainerGap(126, Short.MAX_VALUE)
+                .addComponent(btnGenerar)
+                .addContainerGap())
         );
         pnlOptionsLayout.setVerticalGroup(
             pnlOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 288, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOptionsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGenerar)
+                .addContainerGap())
         );
 
-        javax.swing.GroupLayout pnlGraphLayout = new javax.swing.GroupLayout(pnlGraph);
-        pnlGraph.setLayout(pnlGraphLayout);
-        pnlGraphLayout.setHorizontalGroup(
-            pnlGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 372, Short.MAX_VALUE)
-        );
-        pnlGraphLayout.setVerticalGroup(
-            pnlGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Aun no has ingresado un AFD :)");
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGraph.setViewportView(jLabel2);
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Grafo del AFD");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,22 +69,43 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(pnlGraph, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlGraph)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlGraph, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlGraph, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
+        Reader AFDreader = new Reader("automata.txt");
+        AFD afd = AFDreader.readAutomata();
+        
+        
+        //Panel del grafo
+        GraphView gv = new GraphView(afd);
+        mxGraphComponent graphComponent = gv.initGraph();
+        graphComponent.setMinimumSize(this.pnlGraph.getSize());
+        
+        //Cargamos el grafo a la pantalla
+        pnlGraph.setViewportView(graphComponent);
+        this.pnlGraph.repaint();
+        //this.repaint();
+    }//GEN-LAST:event_btnGenerarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -120,7 +140,10 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel pnlGraph;
+    private javax.swing.JButton btnGenerar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane pnlGraph;
     private javax.swing.JPanel pnlOptions;
     // End of variables declaration//GEN-END:variables
 }
